@@ -12,12 +12,18 @@ void loop() {
     int byte = Serial.read();
     switch (byte) {
       case SET_BAUD_57600:
+        Serial.flush();
+        Serial.end();
         Serial.begin(57600);
-        Serial.write("set to 57600");
+        delay(2000);
+        Serial.write(SET_BAUD_57600);
         break;
       case SET_BAUD_9600:
+        Serial.flush();
+        Serial.end();
         Serial.begin(9600);
-        Serial.write("set to 9600");
+        delay(2000);
+        Serial.write(SET_BAUD_9600);
         break;
       default:
         Serial.write(byte);

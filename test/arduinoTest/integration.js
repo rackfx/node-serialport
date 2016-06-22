@@ -15,6 +15,10 @@ switch (process.platform) {
     platform = 'unix';
 }
 
+// Matches arduinoEcho.ino
+var SET_BAUD_57600 = 130;
+var SET_BAUD_9600 = 131;
+
 var testPort = process.env.TEST_PORT;
 
 if (!testPort) {
@@ -51,7 +55,24 @@ describe('SerialPort Integration tests', function() {
         });
       });
     });
-    it('can still read and write after a baud change');
+    it('can still read and write after a baud change', function(done) {
+      var port = new SerialPort(testPort,{parser: SerialPort.parsers.byteLength(1)});
+      port.on('data', function(data) {
+        console.log(data.toString(), data[0]);
+        if (data.toString() === 'Y') {
+          port.write(new Buffer([SET_BAUD_9600]));
+          port.update({baudRate: 57600});
+        }
+        // Ignore the ready string
+        if (data[0] <= 127) {
+          return;
+        }
+        if (data[0] === SET_BAUD_9600) {
+          port.close(done);
+        }
+        // throw new Error('Unexpected command: ' + data[0]);
+      });
+    });
   });
 
   describe('#read and #write', function() {
