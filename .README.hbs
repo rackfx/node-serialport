@@ -1,10 +1,9 @@
 # Node Serialport
 
-[![npm](https://img.shields.io/npm/dm/serialport.svg?maxAge=2592000)](http://npmjs.com/package/serialport)
-[![Gitter chat](https://badges.gitter.im/EmergingTechnologyAdvisors/node-serialport.svg)](https://gitter.im/EmergingTechnologyAdvisors/node-serialport)
-[![Dependency Status](https://david-dm.org/EmergingTechnologyAdvisors/node-serialport.svg)](https://david-dm.org/EmergingTechnologyAdvisors/node-serialport)
 [![Build Status](https://travis-ci.org/EmergingTechnologyAdvisors/node-serialport.svg?branch=master)](https://travis-ci.org/EmergingTechnologyAdvisors/node-serialport)
 [![Build status](https://ci.appveyor.com/api/projects/status/u6xe3iao2crd7akn/branch/master?svg=true)](https://ci.appveyor.com/project/j5js/node-serialport/branch/master)
+[![Gitter chat](https://badges.gitter.im/EmergingTechnologyAdvisors/node-serialport.svg)](https://gitter.im/EmergingTechnologyAdvisors/node-serialport)
+[![Dependency Status](https://david-dm.org/EmergingTechnologyAdvisors/node-serialport.svg)](https://david-dm.org/EmergingTechnologyAdvisors/node-serialport)
 [![Coverage Status](https://coveralls.io/repos/github/EmergingTechnologyAdvisors/node-serialport/badge.svg?branch=master)](https://coveralls.io/github/EmergingTechnologyAdvisors/node-serialport?branch=master)
 
 For support you can open a [github issue](https://github.com/EmergingTechnologyAdvisors/node-serialport/issues/new), for discussions, designs, and clarifications, we recommend you join our [Gitter Chat room](https://gitter.im/EmergingTechnologyAdvisors/node-serialport). We have two related projects [Browser Serialport](https://github.com/garrows/browser-serialport) "just like Node Serialport but for browser apps", and [Serialport Test Piliot](https://github.com/j5js/serialport-test-pilot) which helps us test serialport.
@@ -17,7 +16,7 @@ If you'd like to contribute please take a look at [contribution guide](CONTRIBUT
 
 You're reading the README for the master branch of serialport. You probably want to be looking at the README of our latest release. See our [change log](changelog.md) for what's new and our [upgrade guide](UPGRADE_GUIDE.md) for a walk through on what to look out for between major versions.
 
- - [`serialport@4.0.1` docs are here](https://github.com/EmergingTechnologyAdvisors/node-serialport/blob/4.0.1/README.md) it is the latest `4.x` releases.
+ - [`serialport@4.0.0` docs are here](https://github.com/EmergingTechnologyAdvisors/node-serialport/blob/4.0.0/README.md) it is the latest `4.x` releases.
  - [`serialport@3.1.2` docs are here](https://github.com/EmergingTechnologyAdvisors/node-serialport/blob/3.1.2/README.md) it is the latest `3.x` releases.
  - [`serialport@2.1.2` docs are here](https://github.com/EmergingTechnologyAdvisors/node-serialport/blob/2.1.2/README.md) it was the last `2.x` release
  - [`serialport@1.7.4` docs are here](https://github.com/EmergingTechnologyAdvisors/node-serialport/blob/v1.7.4/README.md) it was the last `1.x` release
@@ -45,19 +44,9 @@ For getting started with node-serialport, we recommend you begin with the follow
   * [Raspberry Pi Linux](#raspberry-pi-linux)
   * [Illegal Instruction](#illegal-instruction)
 
-
-* [SerialPort](#SerialPort)
-    * [new SerialPort(path, [options], [openCallback])](#new_SerialPort_new)
-    * [.open([callback])](#SerialPort+open)
-    * [.update([options], [callback])](#SerialPort+update)
-    * [.isOpen()](#SerialPort+isOpen) ⇒ <code>Boolean</code>
-    * [.write(data, callback)](#SerialPort+write)
-    * [.close(callback)](#SerialPort+close)
-    * [.flush([callback])](#SerialPort+flush)
-    * [.set([options], [callback])](#SerialPort+set)
-    * [.drain(callback)](#SerialPort+drain)
-    * ["open"](#SerialPort+event_open)
-
+{{#class ~}}
+{{>member-index~}}
+{{/class}}
 
 * [Usage](#usage)
   * [Opening a Port](#opening-a-port)
@@ -186,131 +175,9 @@ npm rebuild --build-from-source
 
 ## SerialPort
 
-<a name="new_SerialPort_new"></a>
-
-### new SerialPort(path, [options], [openCallback])
-Create a new serial port object for the `path`. In the case of invalid arguments or invalid options when constructing a new SerialPort it will throw an error. The port will open automatically by default which is the equivalent of calling `port.open(openCallback)` in the next tick. This can be disabled by setting the option `autoOpen` to false.
-
-**Throws**:
-
-- <code>TypeError</code> When given invalid arguments a TypeError will be thrown.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| path | <code>string</code> | The system path of the serial port to open. For example, `/dev/tty.XXX` on Mac/Linux or `COM1` on Windows. |
-| [options] | <code>[openOptions](#openOptions)</code> | Port configuration options |
-| [openCallback] | <code>SerialPort~errorCallback</code> | Called when a connection has been opened. If this is not provided and an error occurs, it will be emitted on the ports `error` event. The callback will NOT be called if autoOpen is set to false in the openOptions as the open will not be performed. |
-
-<a name="SerialPort+open"></a>
-
-### serialPort.open([callback])
-Opens a connection to the given serial port.
-
-**Kind**: instance method of <code>[SerialPort](#SerialPort)</code>  
-**Emits**: <code>[open](#SerialPort+event_open)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [callback] | <code>SerialPort~errorCallback</code> | Called when a connection has been opened. If this is not provided and an error occurs, it will be emitted on the ports `error` event. |
-
-<a name="SerialPort+update"></a>
-
-### serialPort.update([options], [callback])
-Changes the baud rate for an open port. Throws if you provide a bad argument. Emits an error or calls the callback if the baud rate isn't supported.
-
-**Kind**: instance method of <code>[SerialPort](#SerialPort)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [options] | <code>object</code> | Only `baudRate` is currently supported |
-| [options.baudRate] | <code>number</code> | The baud rate of the port to be opened. This should match one of commonly available baud rates, such as 110, 300, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200. There is no guarantee, that the device connected to the serial port will support the requested baud rate, even if the port itself supports that baud rate. |
-| [callback] | <code>[errorCallback](#errorCallback)</code> | Called once the port's baud rate has been changed. If `.update` is called without an callback and there is an error, an error event will be emitted. |
-
-<a name="SerialPort+isOpen"></a>
-
-### serialPort.isOpen() ⇒ <code>Boolean</code>
-Returns `true` if the port is open.
-
-**Kind**: instance method of <code>[SerialPort](#SerialPort)</code>  
-<a name="SerialPort+write"></a>
-
-### serialPort.write(data, callback)
-Some devices like the Arduino reset when you open a connection to them. In these cases if you immediately write to the device they wont be ready to receive the data. This is often worked around by having the Arduino send a "ready" byte that your node program waits for before writing. You can also often get away with waiting around 400ms.
-
-**Kind**: instance method of <code>[SerialPort](#SerialPort)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| data | <code>string</code> &#124; <code>array</code> &#124; <code>buffer</code> | Accepts a [`Buffer` ](http://nodejs.org/api/buffer.html) object, or a type that is accepted by the `Buffer` constructor (ex. an array of bytes or a string). |
-| callback | <code>function</code> | Called once the write operation returns. |
-
-<a name="SerialPort+close"></a>
-
-### serialPort.close(callback)
-Closes an open connection
-
-**Kind**: instance method of <code>[SerialPort](#SerialPort)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| callback | <code>function</code> | Called once a connection is closed. |
-
-<a name="SerialPort+flush"></a>
-
-### serialPort.flush([callback])
-Flushes data received but not read. See [`tcflush()`](http://linux.die.net/man/3/tcflush) for Mac/Linux and [`FlushFileBuffers`](http://msdn.microsoft.com/en-us/library/windows/desktop/aa364439) for Windows.
-
-**Kind**: instance method of <code>[SerialPort](#SerialPort)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [callback] | <code>function</code> | Called once the flush operation finishes. |
-
-<a name="SerialPort+set"></a>
-
-### serialPort.set([options], [callback])
-Sets flags on an open port. Uses [`SetCommMask`](https://msdn.microsoft.com/en-us/library/windows/desktop/aa363257(v=vs.85).aspx) for windows and [`ioctl`](http://linux.die.net/man/4/tty_ioctl) for mac and linux.
-
-**Kind**: instance method of <code>[SerialPort](#SerialPort)</code>  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| [options] | <code>object</code> |  | All options are operating system default when the port is opened. Every flag is set on each call to the provided or default values. If options isn't provided default options will be used. |
-| [options.brk] | <code>Boolean</code> | <code>false</code> |  |
-| [options.cts] | <code>Boolean</code> | <code>false</code> |  |
-| [options.dsr] | <code>Boolean</code> | <code>false</code> |  |
-| [options.dtr] | <code>Boolean</code> | <code>true</code> |  |
-| [options.rts] | <code>Boolean</code> | <code>true</code> |  |
-| [callback] | <code>function</code> |  | Called once the port's flags have been set. |
-
-<a name="SerialPort+drain"></a>
-
-### serialPort.drain(callback)
-Waits until all output data has been transmitted to the serial port. See [`tcdrain()`](http://linux.die.net/man/3/tcdrain) or [FlushFileBuffers()](https://msdn.microsoft.com/en-us/library/windows/desktop/aa364439(v=vs.85).aspx) for more information.
-
-**Kind**: instance method of <code>[SerialPort](#SerialPort)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| callback | <code>function</code> | Called once the drain operation returns. |
-
-**Example**  
-Writes `data` and waits until it has finish transmitting to the target serial port before calling the callback.
-
-```
-function writeAndDrain (data, callback) {
-  sp.write(data, function () {
-    sp.drain(callback);
-  });
-}
-```
-<a name="SerialPort+event_open"></a>
-
-### "open"
-Callback is called with no arguments when the port is opened and ready for writing. This happens if you have the constructor open immediately (which opens in the next tick) or if you open the port manually with `open()`. See [Useage/Open Event](#open-event) for more information.
-
-**Kind**: event emitted by <code>[SerialPort](#SerialPort)</code>  
+{{#class name="SerialPort"~}}
+{{>members~}}
+{{/class}}
 
 ## Usage
 
